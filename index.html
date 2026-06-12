@@ -1,0 +1,353 @@
+<!DOCTYPE html><html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sistem Data Anggota Kelompok Tani</title>
+<style>
+body{
+    font-family:Arial, sans-serif;
+    margin:0;
+    background:#f4f7f4;
+}
+/* LOGIN */
+#loginPage{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+}
+.login-box{
+    width:350px;
+    background:white;
+    padding:30px;
+    border-radius:10px;
+    box-shadow:0 0 15px rgba(0,0,0,0.2);
+}
+.login-box h2{
+    text-align:center;
+    color:#2e7d32;
+}
+input{
+    width:100%;
+    padding:12px;
+    margin:8px 0;
+    border:1px solid #ccc;
+    border-radius:5px;
+    box-sizing:border-box;
+}
+button{
+    width:100%;
+    padding:12px;
+    background:#2e7d32;
+    color:white;
+    border:none;
+    border-radius:5px;
+    cursor:pointer;
+}
+button:hover{
+    background:#1b5e20;
+}
+/* DASHBOARD */
+#dashboardPage{
+    display:none;
+}
+.header{
+    background:#ffffff;
+    color:#000;
+    padding:10px 20px;
+}
+.header-content{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+.logo-kiri img,
+.logo-kanan img{
+    width:90px;
+    height:90px;
+    object-fit:contain;
+}
+.judul{
+    flex:1;
+    text-align:center;
+    padding:0 15px;
+}
+.judul h1{
+    margin:0;
+    font-size:26px;
+    font-weight:bold;
+    color:#1b5e20;
+}
+.judul p{
+    margin:5px 0 0;
+    font-size:15px;
+    line-height:1.5;
+}
+.garis-kop{
+    margin-top:10px;
+    border-top:4px solid #2e7d32;
+    border-bottom:1px solid #000;
+}
+.info{
+    padding:15px;
+    background:#e8f5e9;
+    font-weight:bold;
+}
+.logout{
+    width:auto;
+    background:red;
+    margin:10px;
+    padding:10px 20px;
+}
+table{
+    width:100%;
+    border-collapse:collapse;
+    table-layout:auto;
+}
+th, td{
+    border:1px solid #ddd;
+    padding:10px;
+    white-space:nowrap;
+}
+tr:nth-child(even){
+    background:#f9f9f9;
+}
+.foto{
+    width:60px;
+    height:60px;
+    border-radius:50%;
+    object-fit:cover;
+}
+#pesan{
+    text-align:center;
+    margin-top:10px;
+    font-weight:bold;
+}
+</style>
+</head>
+<body>
+<!-- LOGIN -->
+
+
+<div id="loginPage">
+    <div class="login-box">
+        <!-- Logo Kelompok Tani -->
+        <div style="text-align:center; margin-bottom:15px;">
+            <img src="Logo kelompok tanpa backgrun.png"
+                 alt="Logo Kelompok Tani"
+                 style="width:120px;height:120px;object-fit:contain;">
+        </div>
+        <h2>KELOMPOK TANI<br>CILALANANG TANI JAYA</h2>
+        <br>Desa : Cikawung
+        <br>Kecamatan : Terisi
+        <br>Kabupaten : Indramayu
+        <input type="text" id="nama" placeholder="Nama Anggota">
+        <input type="text" id="nik" placeholder="Nomor KTP / NIK">
+        <button onclick="login()">LOGIN</button>
+        <div id="pesan"></div>
+    </div>
+</div>
+<!-- DASHBOARD -->
+<div id="dashboardPage">
+    <div class="header">
+    <div class="header-content">
+        <!-- Logo Kelompok Tani -->
+        <div class="logo-kiri">
+            <img src="Logo kelompok tanpa backgrun.png" alt="Logo Kelompok Tani">
+        </div>
+        <!-- Judul -->
+        <div class="judul">
+            <h1>CILALANANG TANI JAYA</h1>
+            <p>
+                Blok Jatireja, Desa Cikawung, Kecamatan Terisi<br>
+                Kabupaten Indramayu, Jawa Barat
+            </p>
+            <p>
+Kelompok Tani Binaan Dinas Pertanian Kabupaten Indramayu
+</p>
+        </div>
+        <!-- Logo Kementerian Pertanian -->
+        <div class="logo-kanan">
+            <img src="logo-kementerian-pertanian.png" alt="Logo Kementerian Pertanian">
+        </div>
+    </div>
+    <div class="garis-kop"></div>
+</div>
+    <div class="info">
+    Total Luas Lahan : <span id="totalLuas">0</span> Ha<br>
+    Total Anggota : <span id="totalAnggota">0</span> Orang<br>
+    Jumlah Anggota Laki-laki : <span id="totalLaki">0</span> Orang<br>
+    Jumlah Anggota Perempuan : <span id="totalPerempuan">0</span> Orang
+</div>
+    <button class="logout" onclick="logout()">
+        Logout
+    </button>
+      <div style="padding:10px;">
+    <input
+        type="text"
+        id="cariData"
+        placeholder="Cari Nama, NIK, atau No Anggota..."
+        onkeyup="cariAnggota()"
+        style="width:100%;max-width:400px;"
+    >
+</div>
+    <table>
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Nama</th>
+                <th>NIK</th>
+                <th>Tempat,Tanggal lahir</th>
+                <th>Alamat</th>
+                <th>Jenis Kelamin</th>
+                <th>No Anggota</th>
+                <th>Luas Lahan</th>
+                <th>Lokasi Petak</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="dataAnggota">
+        </tbody>
+    </table>
+</div>
+<script>
+const anggota = [
+{
+    nama:"SUNANTA",
+    nik:"3212221003880005",
+    TTL:"Indramayu 10-03-1988",
+    alamat:"cikawung terisi indramayu",
+    JK:"Laki-laki",
+    noanggota:"005/CTJ/34/X/2024",
+    luas:1.50,
+    lokasi:"34",
+    status:"Aktif",
+},
+{
+    nama:"AHMAD",
+    nik:"3211111111111111",
+    TTL:"Indramayu 10-06-2000",
+    alamat:"cikawung",
+    JK:"Laki-laki",
+    noanggota:"KTA-0021234567890",
+    luas:0.8,
+    lokasi:"39",
+    status:"Aktif",
+},
+{
+    nama:"SURYANA",
+    nik:"3212222222222222",
+    TTL:"Indramayu 10-12-1991",
+    alamat:"kroya",
+    JK:"Laki-laki",
+    noanggota:"KTA-0031234567890",
+    luas:2.0,
+    lokasi:"34",
+    status:"Aktif",
+},
+  
+{ 
+    nama:"Hj.lisa",
+    nik:"1234567890123456",
+    TTL:"Indramayu 10-10-1989",
+    alamat:"Sukra",
+    JK:"Perempuan",
+    noanggota:"KTA-1234567890123456",
+    luas:1.5,
+    lokasi:"34",
+    status:"aktif",
+  },
+];
+function login(){
+    let nama = document.getElementById("nama").value.trim();
+    let nik = document.getElementById("nik").value.trim();
+    let user = anggota.find(
+        x =>
+        x.nama.toUpperCase() === nama.toUpperCase()
+        &&
+        x.nik === nik
+    );
+    if(user){
+        document.getElementById("loginPage").style.display="none";
+        document.getElementById("dashboardPage").style.display="block";
+        tampilkanData();
+        hitungTotalLuas();
+      function hitungStatistik(){
+    let totalAnggota = anggota.length;
+    let totalLaki = anggota.filter(
+        a => a.JK.toLowerCase() === "laki-laki"
+    ).length;
+    let totalPerempuan = anggota.filter(
+        a => a.JK.toLowerCase() === "perempuan"
+    ).length;
+    document.getElementById("totalAnggota").innerHTML =
+        totalAnggota;
+    document.getElementById("totalLaki").innerHTML =
+        totalLaki;
+    document.getElementById("totalPerempuan").innerHTML =
+        totalPerempuan;
+}
+        hitungStatistik();
+    }else{
+        document.getElementById("pesan").innerHTML =
+        "❌ Nama atau NIK anda tidak ditemukan!!!, silahkan hubungi admin untuk mendata anda.<br>Terimakasih";
+    }
+}
+function tampilkanData(data = anggota){
+    let html = "";
+    data.forEach((a,index)=>{
+        html += `
+        <tr>
+            <td>${index + 1}</td>
+            <td>${a.nama}</td>
+            <td>${a.nik}</td>
+            <td>${a.TTL}</td>
+            <td>${a.alamat}</td>
+            <td>${a.JK}</td>
+            <td>${a.noanggota}</td>
+            <td>${a.luas}</td>
+            <td>${a.lokasi}</td>
+            <td>${a.status}</td>
+        </tr>
+        `;
+    });
+    document.getElementById("dataAnggota").innerHTML = html;
+}
+  function cariAnggota(){
+    let kataKunci = document
+        .getElementById("cariData")
+        .value
+        .toLowerCase();
+    let hasil = anggota.filter(a =>
+        a.nama.toLowerCase().includes(kataKunci) ||
+        a.nik.toLowerCase().includes(kataKunci) ||
+        a.noanggota.toLowerCase().includes(kataKunci)
+    );
+    tampilkanData(hasil);
+    let total = 0;
+    hasil.forEach(a => {
+        total += Number(a.luas);
+    });
+    document.getElementById("totalLuas").innerHTML =
+        total.toFixed(2);
+}
+function logout(){
+    document.getElementById("dashboardPage").style.display="none";
+    document.getElementById("loginPage").style.display="flex";
+    document.getElementById("nama").value="";
+    document.getElementById("nik").value="";
+    document.getElementById("pesan").innerHTML="";
+}
+  function hitungTotalLuas(){
+    let total = 0;
+    anggota.forEach(a => {
+        total += parseFloat(a.luas);
+    });
+    document.getElementById("totalLuas").innerHTML = total.toFixed(2);
+}
+  
+</script>
+</body>
+</html>
